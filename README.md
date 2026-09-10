@@ -23,15 +23,15 @@ WallMind uses a clean, calming visual style with soft lavender and blue tones to
 
 ### Key features
 
-- Describe your key feature
-- Describe your key feature
-- Describe your key feature
+- Task Management - Add, View and mark tasks as complete with an estimated time and energy cost.
+- Focus mode timer - A distraction-free countdown timer to work on selected task.
+- Secure account login - Users can create an account and log in to save their progress.
 
 ### Technologies
 
 I am going to use the required technologies in the following ways.
 
-- **HTML** - Description here
+- **HTML** - Page structure for the login screen, dashboard, task list and timer
 - **CSS** - Description here
 - **React** - Description here
 - **Service** - Description here
