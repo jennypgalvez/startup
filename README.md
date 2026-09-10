@@ -31,12 +31,16 @@ WallMind uses a clean, calming visual style with soft lavender and blue tones to
 
 I am going to use the required technologies in the following ways.
 
-- **HTML** - Page structure for the login screen, dashboard, task list and timer
-- **CSS** - Description here
-- **React** - Description here
-- **Service** - Description here
-- **DB/Login** - Description here
-- **WebSocket** - Description here
+- **HTML** - Structure for the application. PAges for login, dashboard, tasks, and progress. 
+- **CSS** - Application Styling  that is responsive, clean, and easy to use on different screen sizes. 
+- **React** - Provides login, adding and completing tasks, energy selection, task recommendations, navigation and backend endpoint calls. SIngle-page application that reacts to user actions.
+- **Service** - Backend for authentication with endpoints for:
+ - REgister, login, and logout users.
+ - Creating, retrieving, updating and feleting tasks.
+ - Recommending tasks based on energy level and available time.
+ - Displaying a daily motivational quote using a third-party API
+- **DB/Login** - Stores authentication information, users, taks and task completion data in MongoDB
+- **WebSocket** - When a user completes a task, the completion is sent in real time to their friends.
 
 ## 🚀 Specification Deliverable
 
@@ -45,8 +49,8 @@ I am going to use the required technologies in the following ways.
 
 For this deliverable I did the following. I checked the box `[x]` and added a description for things I completed.
 
-- [ ] I completed the prerequisites for this deliverable (Git commit requirement)
-- [ ] Proper use of Markdown
+- [x] I completed the prerequisites for this deliverable (Git commit requirement)
+- [x] Proper use of Markdown
 - [ ] A concise and compelling elevator pitch
 - [ ] Description of key features
 - [ ] Description of how you will use each technology including your 3rd party API and use of WebSocket
