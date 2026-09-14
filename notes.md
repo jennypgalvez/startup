@@ -16,6 +16,13 @@ This file represents what I have learned about web programming.
 this is a test
 Interesting things I have learned about AWS
 
+- AWS EC2 Server Setup Notes
+    - **AMI USED**  "ami-094c4a0be0b642a24" (CS 260 Class AMI)
+    - **Public IP Address:** "3.222.238.243"
+- SSH Connection Command
+To connect to the server from command:
+    - ssh -i ~/OneDrive/Desktop/CS260.pem ubuntu@3.222.238.243
+
 ## HTML
 
 Interesting things I have learned about HTML
@@ -24,4 +31,3 @@ Interesting things I have learned about HTML
 
 Interesting things I have learned about React
 
-I love web programming
