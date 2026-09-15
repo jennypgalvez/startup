@@ -22,6 +22,7 @@ Interesting things I have learned about AWS
 - SSH Connection Command
 To connect to the server from command:
     - ssh -i ~/OneDrive/Desktop/CS260.pem ubuntu@3.222.238.243
+    - ssh -i ~/OneDrive/Desktop/CS260.pem ubuntu@mindwall.click
 
 - Route 53 & Domain Setup
     An IP address works for testing, but a domain name is required for user-friendly navigation and for setting up secure HTTPS connections. Route 53 handles domain registration, DNS hosting, and DNS record management.
