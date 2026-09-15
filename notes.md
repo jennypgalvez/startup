@@ -2,8 +2,8 @@
 
 This file represents what I have learned about web programming.
 
-- [My startup](https://startup.cs260.click)
-- [My simon](https://simon.cs260.click)
+- [My startup](https://startup.mindwall.click)
+- [My simon](https://simon.mindwall.click)
 
 ## Helpful links
 
@@ -20,14 +20,18 @@ Interesting things I have learned about AWS
     - **AMI USED**  "ami-094c4a0be0b642a24" (CS 260 Class AMI)
     - **Public IP Address:** "3.222.238.243"
 - SSH Connection Command
-To connect to the server from command:
+To connect from my computer using SSH:
     - ssh -i ~/OneDrive/Desktop/CS260.pem ubuntu@3.222.238.243
     - ssh -i ~/OneDrive/Desktop/CS260.pem ubuntu@mindwall.click
 
 - Route 53 & Domain Setup
     An IP address works for testing, but a domain name is required for user-friendly navigation and for setting up secure HTTPS connections. Route 53 handles domain registration, DNS hosting, and DNS record management.
     
-    - **Domaind Record"** Connects the main domain mindwall.click
+    - **Domaind Record** Connects "mindwall.click" directly to my server's IP address ("3.222.238.243")
+
+- Caddy
+Caddy is a web server that manages incoming web traffic.
+    - Automatically changes insecure "http://" traffic to secure "https://". startup.mindwall.click and simon.mindwall.click 
 ## HTML
 
 Interesting things I have learned about HTML
