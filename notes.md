@@ -34,7 +34,7 @@ Caddy is a web server that manages incoming web traffic.
     - Automatically changes insecure "http://" traffic to secure "https://". startup.mindwall.click and simon.mindwall.click 
 ## HTML
 
-Interesting things I have learned about HTML
+It is important to have a clean and organized structure for my HTML code. I have learned the different types of elements and how to use the most common ones, such as heading, images, links, and paragraphs.
 
 ## React
 
