@@ -1,4 +1,4 @@
-# Your startup name here
+# Wallmind 
 
 [My Notes](notes.md)
 
