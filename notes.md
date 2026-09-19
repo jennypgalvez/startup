@@ -36,6 +36,9 @@ Caddy is a web server that manages incoming web traffic.
 
 It is important to have a clean and organized structure for my HTML code. I have learned the different types of elements and how to use the most common ones, such as heading, images, links, and paragraphs.
 
+- HTML Setup
+I learned how to deploy my website using the terminal. I figured out how to navigate folder paths, rund a deployment script, and use my key file to get everything working. 
+
 ## React
 
 Interesting things I have learned about React
