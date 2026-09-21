@@ -39,6 +39,10 @@ It is important to have a clean and organized structure for my HTML code. I have
 - HTML Setup
 I learned how to deploy my website using the terminal. I figured out how to navigate folder paths, rund a deployment script, and use my key file to get everything working. 
 
+- Concepts
+ - I learned using <nav> to create a navigation bar, <main> to create the main and <aside> to create a sidebar. 
+ - Mowing between pages using <a href="page.html">Link</a> to make them click trought to the other pages.
+ - Self-closing tags, I used <hr /> to draw a dividing line.
 ## React
 
 Interesting things I have learned about React
