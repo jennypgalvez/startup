@@ -19,7 +19,35 @@
 
         <!--Main Content-->
         <main>
-            
+            <!--Greeting and Banner-->
+            <section id="greeting">
+                <h1>Hello there!</h1>
+                <p>Let's find the best task for your energy and time right now.</p>
+            </section>
+
+            <section id="banner">
+                <p>Work with your mind, not against it. -MindWall</p>
+            </section>
+
+            <!--Task List-->
+            <section id="tasks">
+                <h2> Today's Tasks </h2>
+                <ul>
+                    <li>
+                        <input type="checkbox" id="task1"/>
+                        <label for="task1">Study for CS quiz</label>
+                    </li>
+                    <li>
+                        <input type="checkbox" id="task2"/>
+                        <label for="task2">Work on web project</label>
+                    </li>
+                </ul>
+
+                <!--Takes the user to the timer page-->
+                <form action="timer.html" method="get">
+                    <button type="submit">Start Task -></button>
+                </form>
+            </section>
         </main>
         
         <!--Aside Content-->
