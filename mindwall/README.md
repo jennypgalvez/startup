@@ -1,8 +1,8 @@
-# Wallmind 
+# MindWall
 
 [My Notes](notes.md)
 
-Wallmind is a productive web application designed to help college students manage their tasks based on their current energy level and available time. Instead of simple showing the students a to-do list, Wallmind helps them decide what task makes sense to work on right now. Students can add tasks, set their estimated completition time and energy level and receive a recommendation that matches their current situation. 
+MindWall is a productive web application designed to help college students manage their tasks based on their current energy level and available time. Instead of simple showing the students a to-do list, MindWall helps them decide what task makes sense to work on right now. Students can add tasks, set their estimated completition time and energy level and receive a recommendation that matches their current situation. 
 
 > [!NOTE]
 > This is a template for your startup application. You must modify this `README.md` file for each phase of your development. You only need to fill in the section for each deliverable when that deliverable is submitted in Canvas. Without completing the section for a deliverable, the TA will not know what to look for when grading your submission. Feel free to add additional information to each deliverable description, but make sure you at least have the list of rubric items and a description of what you did for each item.
@@ -12,13 +12,13 @@ Wallmind is a productive web application designed to help college students manag
 
 ### Elevator pitch
 
-Have you ever sat down to study, looked at your huge to do list, and had no idea where to start? Wallmind is a web application that helps college students decide what to work on based on their current energy level and available time. Students can comlplete tasks, track their progress and feel productive
+Have you ever sat down to study, looked at your huge to do list, and had no idea where to start? MindWall is a web application that helps college students decide what to work on based on their current energy level and available time. Students can comlplete tasks, track their progress and feel productive
 
 ### Design
 
-![Design image](wallmind.png)
+![Design image](mindwall.png)
 
-WallMind uses a clean, calming visual style with soft lavender and blue tones to prevent overwhelm. Instead of showing a massive to-do list, the dashboard highlights a couple tasks.
+MindWall uses a clean, calming visual style with soft lavender and blue tones to prevent overwhelm. Instead of showing a massive to-do list, the dashboard highlights a couple tasks.
 
 
 ### Key features
