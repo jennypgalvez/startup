@@ -74,10 +74,10 @@ For this deliverable I did the following. I checked the box `[x]` and added a de
 - [X] **Links** - I completed this part of the deliverable.
 - [X] **Text** - I completed this part of the deliverable.
 - [X] **3rd party API placeholder** - I completed this part of the deliverable.
-- [ ] **Images** - I did not complete this part of the deliverable.
-- [ ] **Login placeholder** - I did not complete this part of the deliverable.
-- [ ] **DB data placeholder** - I did not complete this part of the deliverable.
-- [ ] **WebSocket placeholder** - I did not complete this part of the deliverable.
+- [X] **Images** - I completed this part of the deliverable.
+- [X] **Login placeholder** - I did not complete this part of the deliverable.
+- [X] **DB data placeholder** - I did not complete this part of the deliverable.
+- [X] **WebSocket placeholder** - I did not complete this part of the deliverable.
 
 ## 🚀 CSS deliverable
 
