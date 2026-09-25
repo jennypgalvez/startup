@@ -48,6 +48,13 @@ I learned how to deploy my website using the terminal. I figured out how to navi
 I learned more about CSS, including how to style HTML elements, use selectors, and apply various properties to control the layout and appearance of my web pages.
 
 I also learned how to use CSS frameworks like Bootstrap to speed up the development process and create responsive designs.
+
+- Pallete for MindWall
+    - ebf1ff
+    - adc6ff
+    - d7c5ff
+    - f1ebff
+    - d6e2ff
 ## React
 
 Interesting things I have learned about React
