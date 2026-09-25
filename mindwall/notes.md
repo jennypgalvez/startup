@@ -43,6 +43,11 @@ I learned how to deploy my website using the terminal. I figured out how to navi
  - I learned using <nav> to create a navigation bar, <main> to create the main and <aside> to create a sidebar. 
  - Mowing between pages using <a href="page.html">Link</a> to make them click trought to the other pages.
  - Self-closing tags, I used <hr /> to draw a dividing line.
+
+## CSS
+I learned more about CSS, including how to style HTML elements, use selectors, and apply various properties to control the layout and appearance of my web pages.
+
+I also learned how to use CSS frameworks like Bootstrap to speed up the development process and create responsive designs.
 ## React
 
 Interesting things I have learned about React
