@@ -1,3 +1,18 @@
+/* MindWall Styles */
+/*--Color Palette --*/
+:root {
+    --light-blue: #ebf1ff;
+    --accent-blue: #adc6ff;
+    --accent-purple: #d7c5ff;
+    --light-purple: #f1ebff;
+    --soft-blue: #d6e2ff;
+
+/*--Standard colors --*/
+    --card-bg: #ffffff;
+    --text-main: #1e293b;
+    --text-muted: #64748b;
+}
+
 /*--Base & Font --*/
 *{
     margin: 0;
@@ -8,5 +23,47 @@
 
 /*--Main Layout --*/
 body {
-    background-color: #f0f0f0;
+    background-color: var(--light-blue);
+    color: var(--text-main);
+    display: flex;
+    min-height: 100vh;
+}
+
+/*--Left Sidebar --*/
+header{
+    width: 240px;
+    background-color: var(--light-purple);
+    padding: 2rem;
+    border-right: 1px solid var(--card-bg);
+}
+
+/*--Main Content --*/
+main{
+    flex: 1;
+    padding: 1rem;
+}
+
+/*--Right Sidebar --*/
+aside{
+    width: 320px;
+    background-color: var(--card-bg);
+    padding: 2rem;
+    border-left: 1px solid var(--soft-blue);
+}
+
+/*--Card Styling --*/
+main section, 
+aside section {
+    background-color: var(--card-bg);
+    border-radius: 16px; 
+    padding: 1.5rem;
+    margin-bottom: 1.5rem; 
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.03); 
+    border: 1px solid var(--soft-blue); 
+}
+
+/* Greeting Banner */
+#greeting {
+    background-color: var(--soft-blue);
+    border: none;
 }
