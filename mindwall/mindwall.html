@@ -7,7 +7,8 @@
         <link rel="stylesheet" href="style.css">
     </head>
     <body> 
-        <!--Sidebar Menu-->
+
+        <!--------- Left Sidebar Menu --------->
         <header>
         <nav>
             <!--Logo-->
@@ -21,14 +22,15 @@
         </nav>
         </header>
 
-        <!--Main Content-->
+        <!--------- Main Content Area --------->
         <main>
-            <!--Greeting and Banner-->
+            <!-- Greeting and Banner -->
             <section id="greeting">
                 <h1>[Username]</h1>
                 <p>Let's find the best task for your energy and time right now.</p>
             </section>
 
+            <!-- Daily Quote -->
             <section id="quote-container">
                 <h3>Daily Quote</h3>
                 <p>"this is a placeholder for 3rd party API quote."</p>
@@ -37,9 +39,7 @@
             <!--Task List-->
             <section id="tasks">
                 <h2> Today's Tasks </h2>
-
                 <p>Loading your saved tasks from the database...</p>
-
                 <ul>
                     <li>
                         <input type="checkbox" id="task1"/>
@@ -58,7 +58,7 @@
             </section>
         </main>
         
-        <!--Aside Content-->
+        <!--------- Right Sidebar --------->
         <aside>
             <!-- Mood Tracker -->
             <section id="mood-tracker">
@@ -74,7 +74,7 @@
                 <p>You have completed 2 out of 5 this week.</p>
             </section>
 
-            <!--friends, websocket placeholder-->
+            <!--friend Activity (WebSocket) -->
             <section id="friend-activity">
                 <h3>Recent Activity of Friends</h3>
                 <p>Sarah completed her math homework.</p>
@@ -87,8 +87,14 @@
                 <p>Progress isn't about doing everything, it's about doing what matters.</p>
                 <img src="/mindwall/images/heart-icon.png" alt="Heart Icon" width="85">
             </section>
-            
         </aside>
+
+        <!--------- Footer --------->
+        <footer>
+            <hr />
+            <p>Created by: Jennifer Wall</p>
+            <a href="https://github.com/jennypgalvez/startup">GitHub Repository</a>
+        </footer>
         
     </body>
 </html>
