@@ -45,16 +45,20 @@ I learned how to deploy my website using the terminal. I figured out how to navi
  - Self-closing tags, I used <hr /> to draw a dividing line.
 
 ## CSS
-I learned more about CSS, including how to style HTML elements, use selectors, and apply various properties to control the layout and appearance of my web pages.
+I learned how to actually style HTML elements, use different selectors, and apply properties to completely control how my web pages look and feel. I also learned how to drop in CSS frameworks like Bootstrap to speed up my workflow and easily make things responsive without writing everything from scratch.
 
-I also learned how to use CSS frameworks like Bootstrap to speed up the development process and create responsive designs.
+### MindWall Color Palette
+* `#ebf1ff` (Light Blue)
+* `#adc6ff` (Accent Blue)
+* `#d7c5ff` (Accent Purple)
+* `#f1ebff` (Light Purple)
+* `#d6e2ff` (Soft Blue)
 
-- Pallete for MindWall
-    - ebf1ff
-    - adc6ff
-    - d7c5ff
-    - f1ebff
-    - d6e2ff
+### What I figured out about Layouts & Styling:
+* **Flexbox is a lifesaver:** I learned that by just adding `display: flex`, `justify-content: center`, and `align-items: center` to a container, I can perfectly snap elements (like my login card) right into the dead center of the screen. 
+* **Using External Frameworks:** I learned how fast I can apply polished, responsive styling just by linking a framework like Bootstrap in my HTML `<head>`. After that, I can just throw their built-in classes (like `btn btn-primary`) onto my buttons and they instantly look great.
+* **Adding Custom Google Fonts:** I figured out the absolute cleanest way to add a custom font is by using the `@import` rule. I just have to remember that it MUST be the very first line of my `style.css` file, without any empty lines or code above it, or the browser just ignores it.
+* **CSS Specificity can be tricky:** I learned about the universal selector (`*`). It applies to every single individual element on the page, which means it will actually override inherited styles from my `body` tag! When my custom font wasn't loading, I learned I had to check my `*` block to make sure it wasn't accidentally forcing a default system font instead of my custom one.
 ## React
 
 Interesting things I have learned about React
