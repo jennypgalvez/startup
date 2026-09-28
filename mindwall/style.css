@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/css2?family=Sniglet:wght@400;800&display=swap');
 /* MindWall Styles */
 /*--Color Palette --*/
 :root {
@@ -27,6 +28,7 @@ body {
     color: var(--text-main);
     display: flex;
     min-height: 100vh;
+    font-family: 'Sniglet', cursive;
 }
 
 /*--Left Sidebar --*/
@@ -128,3 +130,42 @@ input[type="checkbox"]:checked + label{
     color: var(--text-muted);
     transition: all 0.2s ease;
 }
+
+/*---------------- Login Page Layout ------------------*/
+.login-layout {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 80vh;
+}
+
+.login-card {
+    width: 100%;
+    max-width: 400px;
+    text-align: center;
+}
+
+.login-logo{
+    margin-bottom: 1rem;
+}
+
+.login-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    text-align: left;
+    margin-top: 2rem;
+}
+
+.login-form input {
+    width: 100%;
+    padding: 0.5rem;
+    margin-top: 0.25rem;
+}
+
+.login-footer {
+    margin-top: auto;
+    width: 100%;
+}
+

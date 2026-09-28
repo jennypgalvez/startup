@@ -3,28 +3,33 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="style.css" />
         <title>MindWall - Login</title>
     </head>
 
     <body> 
         <!--------- Main Content Area (Login Form) --------->
-        <main>
-            <h1>Welcome to MindWall</h1>
-            <p>Please log in to continue.</p>
+        <main class="login-layout">
+            <section class="login-card">
+                <img src="/mindwall/images/mindwall-logo.png" alt="MindWall Logo" width="120" height="120" class="login-logo">
+                <h1>Welcome to MindWall</h1>
+                <p>Please log in to continue.</p>
 
-            <form action="mindwall.html" method="get">
-                <div>
-                    <label for="username">Username:</label>
-                    <input type="text" id="username" name="username" placeholder="Enter your username">
-                </div>
-                
-                <div>
-                    <label for="password">Password:</label>
-                    <input type="password" id="password" name="password" placeholder="Enter your password">
-                </div>
+                <form action="mindwall.html" method="get" class="login-form">
+                    <div>
+                        <label for="username">Username:</label>
+                        <input type="text" id="username" name="username" placeholder="Enter your username">
+                    </div>
+                    
+                    <div>
+                        <label for="password">Password:</label>
+                        <input type="password" id="password" name="password" placeholder="Enter your password">
+                    </div>
 
-                <button type="submit">Login</button>
-            </form>
+                    <button type="submit" class="btn btn-primary">Login</button>
+                    <button type="button" class="btn btn-secondary">Create Account</button>
+                </form>
+            </section>    
 
             <!--------- Footer --------->
             <footer>
