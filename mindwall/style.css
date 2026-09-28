@@ -68,6 +68,12 @@ aside section {
     border: none;
 }
 
+ul{
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
 /*---------------NAVIGATION MENU---------------*/
 header ul{
     list-style: none;
@@ -114,4 +120,11 @@ footer a{
 
 footer a:hover{
     color: var(--accent-purple );
+}
+
+/*---------------- Task List & Checkboxes ------------------*/
+input[type="checkbox"]:checked + label{
+    text-decoration: line-through;
+    color: var(--text-muted);
+    transition: all 0.2s ease;
 }
