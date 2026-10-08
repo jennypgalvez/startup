@@ -61,5 +61,8 @@ I learned how to actually style HTML elements, use different selectors, and appl
 * **CSS Specificity can be tricky:** I learned about the universal selector (`*`). It applies to every single individual element on the page, which means it will actually override inherited styles from my `body` tag! When my custom font wasn't loading, I learned I had to check my `*` block to make sure it wasn't accidentally forcing a default system font instead of my custom one.
 ## React
 
-Interesting things I have learned about React
+## What I Learned:
+- **React & Vite**: Learned how to build web apps using React components and Vite instead of plain HTML files.
+- **Navigation (Routing)**: Used React Router so users can click between the different pages (Login, Play, Scores, About) smoothly without reloading the browser.
+- **Styling**: Fixed how CSS and Bootstrap work together so elements and absolute positions line up correctly on the screen.
 
