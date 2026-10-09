@@ -180,3 +180,9 @@ input[type="checkbox"]:checked + label{
         border: none;
     }
 }
+
+#root {
+    display: flex;
+    min-height: 100vh;
+    width: 100%;
+}
