@@ -4,7 +4,6 @@ import { Login } from './login/login';
 import { Dashboard } from './dashboard/dashboard';
 import { Timer } from './timer/timer';
 import { About } from './about/about';
-import 'bootstrap/dist/css/bootstrap.min.css';
 import './app.css';
 
 export default function App() {
@@ -18,7 +17,7 @@ export default function App() {
             </div>
             <menu className="navbar-nav flex-row">
               <li className="nav-item px-3">
-                <NavLink className="nav-link" to="">
+                <NavLink className="nav-link" to="/">
                   Login
                 </NavLink>
               </li>
