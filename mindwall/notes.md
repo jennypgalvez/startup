@@ -61,8 +61,9 @@ I learned how to actually style HTML elements, use different selectors, and appl
 * **CSS Specificity can be tricky:** I learned about the universal selector (`*`). It applies to every single individual element on the page, which means it will actually override inherited styles from my `body` tag! When my custom font wasn't loading, I learned I had to check my `*` block to make sure it wasn't accidentally forcing a default system font instead of my custom one.
 ## React
 
-## What I Learned:
+# What I Learned:
 - **React & Vite**: Learned how to build web apps using React components and Vite instead of plain HTML files.
 - **Navigation (Routing)**: Used React Router so users can click between the different pages (Login, Play, Scores, About) smoothly without reloading the browser.
 - **Styling**: Fixed how CSS and Bootstrap work together so elements and absolute positions line up correctly on the screen.
-
+# Simon React Phase 2: Reactivity
+In this phase, I transformed the static Simon HTML views into a dynamic, reactive React application. I learned how to manage component state using `useState` and handle side effects with `useEffect` for data loading and event subscriptions like `GameNotifier`. I also implemented core interactive game logic, rendered dynamic high-score tables using JavaScript loops, and utilized the "lifting state up" pattern between `App.jsx` and `Login.jsx` to manage user authentication and control navigation flow across views.
