@@ -1,14 +1,15 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-export function Login() {
-  const [userName, setUserName] = useState('');
+export function Login({ userName:  PropUserName, authState, onAuthChange }) {
+  const [userName, setUserName] = useState(PropUserName || '');
   const navigate = useNavigate();
 
   function handleLogin(e) {
     e.preventDefault();
     if (userName) {
       localStorage.setItem('userName', userName);
+      onAuthChange(userName, 'authenticated');
       navigate('/dashboard');
     }
   }
