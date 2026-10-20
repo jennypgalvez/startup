@@ -8,8 +8,8 @@ import { Friends } from './friends/friends';
 import './style.css';
 
 export default function App() {
-  const [userName, setUserName] = useState(localStorage.getItem('userName') || '');
-  const [authState, setAuthState] = useState(userName ? 'authenticated' : 'unauthenticated');
+  const [userName, setUserName] = useState('');
+  const [authState, setAuthState] = useState('unauthenticated');
 
   return (
     <BrowserRouter>
@@ -20,9 +20,8 @@ export default function App() {
             <img src="/images/mindwall-logo.png" alt="MindWall Logo" width="100" height="100" />
             <h2>MindWall</h2>
             <ul>
-              <li><NavLink to="/">Home</NavLink></li>
-              {authState === 'unauthenticated' && (
-                <li><NavLink to="/login">Login</NavLink></li>
+              {authState === 'authenticated' && (
+                <li><NavLink to="/">Home</NavLink></li>
               )}
               {authState === 'authenticated' && (
                 <>
@@ -30,6 +29,18 @@ export default function App() {
                 <li><NavLink to="/tasks">My tasks</NavLink></li>
                 <li><NavLink to="/timer">Focus Mode</NavLink></li>
                 <li><NavLink to="/friends">Friends</NavLink></li>
+                <li>
+                  < button 
+                    onClick={() => {
+                      localStorage.removeItem('userName');
+                      setUserName('');
+                      setAuthState('unauthenticated');
+                    }}
+                    className="btn btn-sm btn-secondary mt-3"
+                >
+                  Logout
+                </button>
+                </li>
                 </>
               )}
             </ul>
@@ -38,27 +49,44 @@ export default function App() {
         
         {/* Dynamic Route Content */}
         <main style={{ flex: 1, padding: '2rem' }}>
-        <Routes>
-          <Route path="/" element={<Login />} />
-          <Route 
-          path="/login"
-          element={
-            <Login
-              userName={userName}
-              authState={authState}
-              onAuthChange={(newUserName, newAuthState) => {
-                setUserName(newUserName);
-                setAuthState(newAuthState);
-              }}
+          <Routes>
+            <Route 
+              path="/"
+              element={
+                authState === 'authenticated' ? (
+                <Login
+                  userName={userName}
+                  authState={authState}
+                  onAuthChange={(newUserName, newAuthState) => {
+                    setUserName(newUserName);
+                    setAuthState(newAuthState);
+                }}
             />
-          }
+              ) : (
+                <navigate to="/dashboard" replace />
+              )
+            }
+            />
+
+          <Route
+            path="/dashboard"
+            element={authState === 'authenticated' ? <Dashboard userName={userName} /> : <navigate to="/" replace />} 
           />
-          <Route path="/dashboard" element={<Dashboard userName={userName} />} />
-          <Route path="/tasks" element={<Tasks userName={userName} />} />
-          <Route path="/timer" element={<Timer userName={userName} />} />
-          <Route path="/friends" element={<Friends userName={userName} />} />
+          <Route
+            path="/tasks" 
+            element={authState === 'authenticated' ? <Tasks userName={userName} /> : <navigate to="/" replace />}  
+          />
+          <Route 
+            path="/timer" 
+            element={authState === 'authenticated' ? <Timer userName={userName} /> : <navigate to="/" replace />} 
+          />
+          <Route
+            path="/friends"
+            element={authState === 'authenticated' ? <Friends userName={userName} /> : <navigate to="/" replace />} 
+          />
           <Route path="*" element={<NotFound />} />
         </Routes>
+        </main>
       </div>
     </BrowserRouter>
   );
