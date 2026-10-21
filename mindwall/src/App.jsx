@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import { BrowserRouter, Routes, Route, NavLink } from 'react-router-dom';
 import { Login } from './login/login';
 import { Dashboard } from './dashboard/dashboard';
@@ -8,8 +8,8 @@ import { Friends } from './friends/friends';
 import './style.css';
 
 export default function App() {
-  const [userName, setUserName] = useState('');
-  const [authState, setAuthState] = useState('unauthenticated');
+  const [userName, setUserName] = useState(localStorage.getItem('userName') || '');
+  const [authState, setAuthState] = useState(userName ? 'authenticated' : 'unauthenticated');
 
   return (
     <BrowserRouter>
@@ -21,71 +21,69 @@ export default function App() {
             <h2>MindWall</h2>
             <ul>
               {authState === 'authenticated' && (
-                <li><NavLink to="/">Home</NavLink></li>
-              )}
-              {authState === 'authenticated' && (
                 <>
-                <li><NavLink to="/dashboard">Dashboard</NavLink></li>
-                <li><NavLink to="/tasks">My tasks</NavLink></li>
-                <li><NavLink to="/timer">Focus Mode</NavLink></li>
-                <li><NavLink to="/friends">Friends</NavLink></li>
-                <li>
-                  < button 
-                    onClick={() => {
-                      localStorage.removeItem('userName');
-                      setUserName('');
-                      setAuthState('unauthenticated');
-                    }}
-                    className="btn btn-sm btn-secondary mt-3"
-                >
-                  Logout
-                </button>
-                </li>
+                  <li><NavLink to="/dashboard">Dashboard</NavLink></li>
+                  <li><NavLink to="/tasks">My tasks</NavLink></li>
+                  <li><NavLink to="/timer">Focus Mode</NavLink></li>
+                  <li><NavLink to="/friends">Friends</NavLink></li>
+                  <li>
+                    < button
+                      onClick={() => {
+                        localStorage.removeItem('userName');
+                        setUserName('');
+                        setAuthState('unauthenticated');
+                        window.location.href = '/';  // Redirect to login page after logout
+                      }}
+                      className="btn btn-sm btn-secondary mt-3"
+                    >
+                      Logout
+                    </button>
+                  </li>
                 </>
               )}
             </ul>
           </nav>
         </header>
-        
+
         {/* Dynamic Route Content */}
         <main style={{ flex: 1, padding: '2rem' }}>
           <Routes>
-            <Route 
+            <Route
               path="/"
               element={
                 authState === 'authenticated' ? (
-                <Login
-                  userName={userName}
-                  authState={authState}
-                  onAuthChange={(newUserName, newAuthState) => {
-                    setUserName(newUserName);
-                    setAuthState(newAuthState);
-                }}
-            />
-              ) : (
-                <navigate to="/dashboard" replace />
-              )
-            }
+                  <Dashboard userName={userName} />
+                ) : (
+                  <Login
+                    userName={userName}
+                    authState={authState}
+                    onAuthChange={(newUserName, newAuthState) => {
+                      setUserName(newUserName);
+                      setAuthState(newAuthState);
+                    }}
+                  />
+                )
+              }
             />
 
-          <Route
-            path="/dashboard"
-            element={authState === 'authenticated' ? <Dashboard userName={userName} /> : <navigate to="/" replace />} 
-          />
-          <Route
-            path="/tasks" 
-            element={authState === 'authenticated' ? <Tasks userName={userName} /> : <navigate to="/" replace />}  
-          />
-          <Route 
-            path="/timer" 
-            element={authState === 'authenticated' ? <Timer userName={userName} /> : <navigate to="/" replace />} 
-          />
-          <Route
-            path="/friends"
-            element={authState === 'authenticated' ? <Friends userName={userName} /> : <navigate to="/" replace />} 
-          />
-          <Route path="*" element={<NotFound />} />
-        </Routes>
+            <Route
+              path="/dashboard"
+              element={authState === 'authenticated' ? <Dashboard userName={userName} /> : <navigate to="/" replace />}
+            />
+            <Route
+              path="/tasks"
+              element={authState === 'authenticated' ? <Tasks userName={userName} /> : <navigate to="/" replace />}
+            />
+            <Route
+              path="/timer"
+              element={authState === 'authenticated' ? <Timer userName={userName} /> : <navigate to="/" replace />}
+            />
+            <Route
+              path="/friends"
+              element={authState === 'authenticated' ? <Friends userName={userName} /> : <navigate to="/" replace />}
+            />
+            <Route path="*" element={<NotFound />} />
+          </Routes>
         </main>
       </div>
     </BrowserRouter>
