@@ -23,7 +23,15 @@ export function Dashboard() {
   }, []);
   
   function toggleTask(id) {
-    setMood(sleectedMood);
+    const updatedTasks = tasks.map(task => 
+      task.id === id ? { ...task, completed: !task.completed } : task
+    );
+    setTasks(updatedTasks);
+    localStorage.setItem('mindwall_tasks', JSON.stringify(updatedTasks));
+  }
+
+  function handleMoodChange(selectedMood) {
+    setMood(selectedMood);
     localStorage.setItem('mindwall_mood', selectedMood);
   }
 
@@ -95,7 +103,7 @@ export function Dashboard() {
 
         <section id="progress-widget" className="card p-3 shadow-sm">
           <h3>Your progress</h3>
-          <p className="mb-0">You have completed {completedTasks} out of {tasks.length} tasks.</p>
+          <p className="mb-0">You have completed {completedCount} out of {tasks.length} tasks.</p>
         </section>
 
         <section id="friend-activity" className="card p-3 shadow-sm">
