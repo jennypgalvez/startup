@@ -84,9 +84,9 @@ For this deliverable I did the following. I checked the box `[x]` and added a de
 
 ## 🚀 React part 2: Reactivity deliverable
 For this deliverable I did the following. I checked the box `[x]` and added a description for things I completed.
-- [ ] I completed the prerequisites for this deliverable (Simon deployed, GitHub link, Git commits)
-- [ ] **All functionality implemented or mocked out**: I did not complete this part of the deliverable.
-- [ ] **Hooks**: I did not complete this part of the deliverable.
+- [X] I completed the prerequisites for this deliverable (Simon deployed, GitHub link, Git commits)
+- [X] **All functionality implemented or mocked out**: Implemented full client-side functionality and state management across Login, Dashboard, Tasks, Friends, and Timer components using React and localStorage.
+- [X] **Hooks**: Implemented useState, useEffect, useNavigate to manage user sessions, real-time task completion tracking, mood state and the pomodoro timer.
 
 ## 🚀 Service deliverable
 For this deliverable I did the following. I checked the box `[x]` and added a description for things I completed.
