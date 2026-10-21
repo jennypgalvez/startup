@@ -66,7 +66,7 @@ export function Dashboard() {
                   className="me-2"
                 />
                 <label htmlFor={`task-${task.id}`} style={{ textDecoration: task.completed ? 'line-through' : 'none' }}>
-                  {task.name}
+                  {task.name || task.text}
                 </label>
               </li>
             ))}
