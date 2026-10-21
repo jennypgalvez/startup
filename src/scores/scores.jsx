@@ -30,7 +30,7 @@ export function Scores() {
   } else {
     scoreRows.push(
       <tr key='0'>
-        <td colSpan='4'>Be the first to score</td>
+        <td colSpan='4'>Nobody has played yet—step up!</td>
       </tr>
     );
   }
