@@ -3,11 +3,12 @@ import { useNavigate } from 'react-router-dom';
 
 export function Login({ userName:  PropUserName, authState, onAuthChange }) {
   const [userName, setUserName] = useState(PropUserName || '');
+  const [password, setPassword] = useState('');
   const navigate = useNavigate();
 
   function handleLogin(e) {
     e.preventDefault();
-    if (userName) {
+    if (userName && password) {
       localStorage.setItem('userName', userName);
       onAuthChange(userName, 'authenticated');
       navigate('/dashboard');
@@ -20,7 +21,7 @@ export function Login({ userName:  PropUserName, authState, onAuthChange }) {
         <h2 className="text-center">Welcome to MindWall</h2>
         <p className="text-muted text-center">Match tasks to your energy and time.</p>
         <form onSubmit={handleLogin} className="login-form">
-          <div>
+          <div className="mb-3">
             <label>Username</label>
             <input
               type="text"
@@ -28,6 +29,17 @@ export function Login({ userName:  PropUserName, authState, onAuthChange }) {
               placeholder="Enter your name"
               value={userName}
               onChange={(e) => setUserName(e.target.value)}
+              required
+            />
+          </div>
+          <div className="mb-3">
+            <label>Password</label>
+            <input
+              type="password"
+              className="form-control"
+              placeholder="Enter your password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
               required
             />
           </div>
