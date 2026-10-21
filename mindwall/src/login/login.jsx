@@ -10,6 +10,8 @@ export function Login({ userName:  PropUserName, authState, onAuthChange }) {
     e.preventDefault();
     if (userName && password) {
       localStorage.setItem('userName', userName);
+      localStorage.setItem('mindwall_mood', 'Not Set');
+      localStorage.setItem('mindwall_tasks', JSON.stringify([]));
       onAuthChange(userName, 'authenticated');
       navigate('/dashboard');
     }
