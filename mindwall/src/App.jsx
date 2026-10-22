@@ -8,12 +8,19 @@ import { Friends } from './friends/friends';
 import './style.css';
 
 export default function App() {
+  return (
+    <BrowserRouter>
+      <AppContent />
+    </BrowserRouter>
+  );
+}
+
+function AppContent() {
   const [userName, setUserName] = useState(localStorage.getItem('userName') || '');
   const [authState, setAuthState] = useState(userName ? 'authenticated' : 'unauthenticated');
   const navigate = useNavigate();
 
   return (
-    <BrowserRouter>
       <div style={{ display: 'flex', minHeight: '100vh', width: '100%' }}>
         {/* Left Sidebar Navigation */}
         <header>
@@ -81,13 +88,12 @@ export default function App() {
             />
             <Route
               path="/friends"
-              element={authState === 'authenticated' ? <Friends userName={userName} /> : <Navigate   to="/" replace />}
+              element={authState === 'authenticated' ? <Friends userName={userName} /> : <Navigate to="/" replace />}
             />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </main>
       </div>
-    </BrowserRouter>
   );
 }
 
