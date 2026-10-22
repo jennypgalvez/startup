@@ -41,7 +41,7 @@ export function Dashboard() {
     <div style={{ display: 'flex', flex: 1, width: '100%' }}>
       <main style={{ flex: 2 }}>
         {/* Greeting Banner */}
-        <section id="greeting" clsassName="mb-4">
+        <section id="greeting" className="mb-4">
           <h1>Welcome, {userName}!</h1>
           <p className="text-muted">Let's find the best task for your energy and time right now.</p>
         </section>

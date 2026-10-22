@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { BrowserRouter, Routes, Route, NavLink } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, NavLink, useNavigate, Navigate } from 'react-router-dom';
 import { Login } from './login/login';
 import { Dashboard } from './dashboard/dashboard';
 import { Tasks } from './tasks/tasks';
@@ -10,6 +10,7 @@ import './style.css';
 export default function App() {
   const [userName, setUserName] = useState(localStorage.getItem('userName') || '');
   const [authState, setAuthState] = useState(userName ? 'authenticated' : 'unauthenticated');
+  const navigate = useNavigate();
 
   return (
     <BrowserRouter>
@@ -32,7 +33,7 @@ export default function App() {
                         localStorage.removeItem('userName');
                         setUserName('');
                         setAuthState('unauthenticated');
-                        window.location.href = '/';  // Redirect to login page after logout
+                        navigate('/');  // Redirect to login page after logout
                       }}
                       className="btn btn-sm btn-secondary mt-3"
                     >
@@ -68,19 +69,19 @@ export default function App() {
 
             <Route
               path="/dashboard"
-              element={authState === 'authenticated' ? <Dashboard userName={userName} /> : <navigate to="/" replace />}
+              element={authState === 'authenticated' ? <Dashboard userName={userName} /> : <Navigate to="/" replace />}
             />
             <Route
               path="/tasks"
-              element={authState === 'authenticated' ? <Tasks userName={userName} /> : <navigate to="/" replace />}
+              element={authState === 'authenticated' ? <Tasks userName={userName} /> : <Navigate to="/" replace />}
             />
             <Route
               path="/timer"
-              element={authState === 'authenticated' ? <Timer userName={userName} /> : <navigate to="/" replace />}
+              element={authState === 'authenticated' ? <Timer userName={userName} /> : <Navigate to="/" replace />}
             />
             <Route
               path="/friends"
-              element={authState === 'authenticated' ? <Friends userName={userName} /> : <navigate to="/" replace />}
+              element={authState === 'authenticated' ? <Friends userName={userName} /> : <Navigate   to="/" replace />}
             />
             <Route path="*" element={<NotFound />} />
           </Routes>

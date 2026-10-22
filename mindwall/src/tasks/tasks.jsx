@@ -53,7 +53,7 @@ export function Tasks() {
                     color: task.completed ? '#6c757d' : 'inherit'
                   }}
                 >
-                  {task.text || task.name}
+                  {task.text}
                 </label>
               </li>
             ))}
