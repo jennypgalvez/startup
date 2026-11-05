@@ -1,69 +1,137 @@
+const cookieParser = require('cookie-parser');
+const bcrypt = require('bcryptjs');
 const express = require('express');
+const uuid = require('uuid');
 const app = express();
 
-app.use(express.json());
+const authCookieName = 'token';
 
-app.use(express.static('public'));
-
-const port = process.argv.length > 2 ? process.argv[2] : 4000;
-
-// Router for API endpoints
-const apiRouter = express.Router();
-app.use(`/api`, apiRouter);
-
-// In-memory data store for tasks (matching your frontend task structure)
+// In-memory data stores for MindWall
+let users = [];
 let tasks = [
   { id: 1, text: 'Finish CS260 assignment', completed: false },
-  { id: 2, text: 'Read a chapter of the textbook', completed: false },
-  { id: 3, text: 'Plan a project', completed: false }
+  { id: 2, text: 'Read a chapter of the textbook', completed: false }
 ];
-
-// In-memory data store for friend activities
 let activities = [
   { id: 1, name: 'Sarah', activity: 'Completed a math assignment', status: 'Online' },
-  { id: 2, name: 'John', activity: 'Working on a history project', status: 'Studying' },
-  { id: 3, name: 'Emma', activity: 'Taking a break', status: 'Offline' }
+  { id: 2, name: 'John', activity: 'Working on a history project', status: 'Studying' }
 ];
 
-// Get tasks endpoint
-apiRouter.get('/tasks', (_req, res) => {
+// Backend service must use port 4000
+const port = process.argv.length > 2 ? process.argv[2] : 4000;
+
+// Middleware
+app.use(express.json());
+app.use(cookieParser());
+app.use(express.static('public'));
+
+// Router for API endpoints
+var apiRouter = express.Router();
+app.use(`/api`, apiRouter);
+
+// Authentication Endpoints (from Simon reference)
+apiRouter.post('/auth/create', async (req, res) => {
+  if (await findUser('email', req.body.email)) {
+    res.status(409).send({ msg: 'Existing user' });
+  } else {
+    const user = await createUser(req.body.email, req.body.password);
+    setAuthCookie(res, user.token);
+    res.send({ email: user.email });
+  }
+});
+
+apiRouter.post('/auth/login', async (req, res) => {
+  const user = await findUser('email', req.body.email);
+  if (user) {
+    if (await bcrypt.compare(req.body.password, user.password)) {
+      user.token = uuid.v4();
+      setAuthCookie(res, user.token);
+      res.send({ email: user.email });
+      return;
+    }
+  }
+  res.status(401).send({ msg: 'Unauthorized' });
+});
+
+apiRouter.delete('/auth/logout', async (req, res) => {
+  const user = await findUser('token', req.cookies[authCookieName]);
+  if (user) {
+    delete user.token;
+  }
+  res.clearCookie(authCookieName);
+  res.status(204).end();
+});
+
+// Middleware to verify authorization
+const verifyAuth = async (req, res, next) => {
+  const user = await findUser('token', req.cookies[authCookieName]);
+  if (user) {
+    next();
+  } else {
+    res.status(401).send({ msg: 'Unauthorized' });
+  }
+};
+
+// MindWall Endpoints
+apiRouter.get('/tasks', verifyAuth, (_req, res) => {
   res.send(tasks);
 });
 
-// Add a new task endpoint
-apiRouter.post('/task', (req, res) => {
+apiRouter.post('/task', verifyAuth, (req, res) => {
   const newTask = { id: Date.now(), ...req.body };
   tasks.push(newTask);
   res.send(tasks);
 });
 
-// Get friends/activity feed endpoint
-apiRouter.get('/activities', (_req, res) => {
+apiRouter.get('/activities', verifyAuth, (_req, res) => {
   res.send(activities);
 });
 
-// Third-party quote endpoint integration (satisfies assignment requirement)
 apiRouter.get('/quote', async (_req, res) => {
   try {
     const response = await fetch('https://api.quotable.io/random');
     const data = await response.json();
-    res.send({
-      quote: data.content,
-      author: data.author
-    });
+    res.send({ quote: data.content, author: data.author });
   } catch (error) {
-    // Fallback quote matching your dashboard theme
-    res.send({
-      quote: "Focus on being productive instead of busy.",
-      author: "Tim Ferriss"
-    });
+    res.send({ quote: "Focus on being productive instead of busy.", author: "Tim Ferriss" });
   }
 });
 
-// Default fallback for SPA routing
+// Default error handler
+app.use(function (err, req, res, next) {
+  res.status(500).send({ type: err.name, message: err.message });
+});
+
+// Return default page for unknown paths
 app.use((_req, res) => {
   res.sendFile('index.html', { root: 'public' });
 });
+
+// Helper Functions
+async function createUser(email, password) {
+  const passwordHash = await bcrypt.hash(password, 10);
+  const user = {
+    email: email,
+    password: passwordHash,
+    token: uuid.v4(),
+  };
+  users.push(user);
+  return user;
+}
+
+async function findUser(field, value) {
+  if (!value) return null;
+  return users.find((u) => u[field] === value);
+}
+
+function setAuthCookie(res, authToken) {
+  res.cookie(authCookieName, authToken, {
+    maxAge: 1000 * 60 * 60 * 24 * 365,
+    secure: true,
+    httpOnly: true,
+    sameSite: 'strict',
+  });
+}
 
 app.listen(port, () => {
   console.log(`MindWall server listening on port ${port}`);
