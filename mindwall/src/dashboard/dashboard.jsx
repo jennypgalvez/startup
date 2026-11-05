@@ -13,9 +13,19 @@ export function Dashboard() {
   // Fetch tasks and quote from backend when the dashboard loads
   useEffect(() => {
     fetch('/api/tasks')
-      .then((res) => res.json())
+      .then((res) => {
+        if (!res.ok) throw new Error('Failed to fetch tasks');
+        return res.json();
+      })
       .then((data) => setTasks(data))
-      .catch((err) => console.error('Error fetching tasks:', err));
+      .catch((err) => {
+        console.error('Error fetching tasks:', err);
+        // Fallback default tasks if API fails or needs login
+        setTasks([
+          { id: 1, text: 'Finish CS260 assignment', completed: false },
+          { id: 2, text: 'Read a chapter of the textbook', completed: false }
+        ]);
+      });
 
     fetch('/api/quote')
       .then((res) => res.json())
