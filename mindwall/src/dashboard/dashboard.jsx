@@ -1,25 +1,26 @@
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 
 export function Dashboard() {
   const userName = localStorage.getItem('userName') || 'Jennifer';
-  //State for tasks loaded from local 
+  
+  // State for tasks and daily quotes from the backend
   const [tasks, setTasks] = useState([]);
+  const [quote, setQuote] = useState({ quote: "Focus on being productive instead of busy.", author: "Tim Ferriss" });
+  
   // State for mood tracking
   const [mood, setMood] = useState(localStorage.getItem('mindwall_mood') || 'Not Set');
   
+  // Fetch tasks and quote from backend when the dashboard loads
   useEffect(() => {
-    const savedTasks = JSON.parse(localStorage.getItem('mindwall_tasks')) || [];
-    if(savedTasks.length > 0) {
-      setTasks(savedTasks);
-    } else{
-      // Default tasks if none are saved
-      const defaultTasks = [
-        { id: 1, name: 'Study for CS quiz', completed: false },
-        { id: 2, name: 'Work on web project', completed: false },
-      ];
-      setTasks(defaultTasks);
-      localStorage.setItem('mindwall_tasks', JSON.stringify(defaultTasks));
-    }
+    fetch('/api/tasks')
+      .then((res) => res.json())
+      .then((data) => setTasks(data))
+      .catch((err) => console.error('Error fetching tasks:', err));
+
+    fetch('/api/quote')
+      .then((res) => res.json())
+      .then((data) => setQuote(data))
+      .catch((err) => console.error('Error fetching quote:', err));
   }, []);
   
   function toggleTask(id) {
@@ -27,7 +28,6 @@ export function Dashboard() {
       task.id === id ? { ...task, completed: !task.completed } : task
     );
     setTasks(updatedTasks);
-    localStorage.setItem('mindwall_tasks', JSON.stringify(updatedTasks));
   }
 
   function handleMoodChange(selectedMood) {
@@ -46,10 +46,10 @@ export function Dashboard() {
           <p className="text-muted">Let's find the best task for your energy and time right now.</p>
         </section>
 
-        {/* Daily Quote */}
+        {/* Daily Quote (Fetched from backend/third-party API) */}
         <section id="quote-container" className="card p-3 mb-4 shadow-sm bg-light">
           <h3>Daily Quote</h3>
-          <p className= "mb-0 font-italic">"Focus on being productive instead of busy." — Tim Ferriss</p>
+          <p className="mb-0 font-italic">"{quote.quote}" — {quote.author}</p>
         </section>
 
         {/* Task List */}
@@ -120,5 +120,3 @@ export function Dashboard() {
     </div>
   );
 }
-
-       
