@@ -98,11 +98,11 @@ apiRouter.get('/activities', verifyAuth, (_req, res) => {
 
 apiRouter.get('/quote', async (_req, res) => {
   try {
-    const response = await fetch('https://api.quotable.io/random');
+    const response = await fetch('https://zenquotes.io/api/random');
     const data = await response.json();
-    res.send({ quote: data.content, author: data.author });
+    res.send({ quote: data[0].q, author: data[0].a });
   } catch (error) {
-    res.send({ quote: "Focus on being productive instead of busy.", author: "Tim Ferriss" });
+    res.send({ quote: "Focus on being productive instead of busy.", author: "Tim Ferriss"});
   }
 });
 
