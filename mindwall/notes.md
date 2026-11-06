@@ -69,3 +69,6 @@ I learned how to actually style HTML elements, use different selectors, and appl
 In this phase, I transformed the static Simon HTML views into a dynamic, reactive React application. I learned how to manage component state using `useState` and handle side effects with `useEffect` for data loading and event subscriptions like `GameNotifier`. I also implemented core interactive game logic, rendered dynamic high-score tables using JavaScript loops, and utilized the "lifting state up" pattern between `App.jsx` and `Login.jsx` to manage user authentication and control navigation flow across views.
 
 Building the React components and reactivity features for MindWall taught me how to manage client-side state and persistence effectively across multiple views using React hooks like useState and useEffect. I gained practical experience lifting state, synchronizing local storage data between the dashboard and dedicated task pages, and handling interactive user flows like authentication routing and custom interval timers.
+
+# Server
+Building this project taught me how to connect my React website to a backend server using Node.js and Express. I learned how to set up server routes to handle tasks and daily quotes, serve my website files, and protect user accounts securely using login cookies and password hashing.

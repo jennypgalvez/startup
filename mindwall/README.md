@@ -91,13 +91,13 @@ For this deliverable I did the following. I checked the box `[x]` and added a de
 ## 🚀 Service deliverable
 For this deliverable I did the following. I checked the box `[x]` and added a description for things I completed.
 - [X] I completed the prerequisites for this deliverable (Simon deployed, GitHub link, Git commits)
-- [ ] **Node.js/Express HTTP service**: I built and configure 
-- [ ] **Static middleware for frontend**: I did not complete this part of the deliverable.
-- [ ] **Calls to third party endpoints**: I did not complete this part of the deliverable.
-- [ ] **Backend service endpoints**: I did not complete this part of the deliverable.
-- [ ] **Frontend calls service endpoints**: I did not complete this part of the deliverable.
-- [ ] **Supports registration, login, logout, and restricted endpoint**: I did not complete this part of the deliverable.
-- [ ] **Uses BCrypt to hash passwords**: I did not complete this part of the deliverable.
+- [X] **Node.js/Express HTTP service**: I built and configured Node.js and Express to serve the React frontend and provide backend endpoints for user authentication, task management, and motivational quotes.
+- [X] **Static middleware for frontend**: I built and configured static middleware to serve the React frontend.
+- [X] **Calls to third party endpoints**: I implemented calls to the ZenQuotes API to fetch motivational quotes.
+- [X] **Backend service endpoints**: I implemented backend endpoints for user authentication, task management, and motivational quotes.
+- [X] **Frontend calls service endpoints**: I implemented frontend calls to the backend service endpoints.
+- [X] **Supports registration, login, logout, and restricted endpoint**: I implemented user registration, login, logout, and restricted endpoint functionality.
+- [X] **Uses BCrypt to hash passwords**: I implemented BCrypt to hash passwords.
 
 ## 🚀 DB deliverable
 For this deliverable I did the following. I checked the box `[x]` and added a description for things I completed.
