@@ -78,8 +78,8 @@ apiRouter.get('/tasks', (_req, res) => {
   res.send(tasks);
 });
 
-apiRouter.post('/task', verifyAuth, (req, res) => {
-  const newTask = { id: Date.now(), ...req.body };
+apiRouter.post('/task', (req, res) => {
+  const newTask = { id: Date.now(), text: req.body.text, completed: false };
   tasks.push(newTask);
   res.send(tasks);
 });

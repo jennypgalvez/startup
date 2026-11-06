@@ -1,21 +1,27 @@
 import React, { useState, useEffect } from 'react';
 
 export function Tasks() {
-  const [tasks, setTasks] = useState(() => {
-    const saved = localStorage.getItem('mindwall_tasks');
-    return saved ? JSON.parse(saved) : [
-      { id: 1, text: 'Finish CS260 assignment', completed: false },
-      { id: 2, text: 'Read a chapter of the textbook', completed: false },
-      { id: 3, text: 'Plan a project', completed: false },
-    ];
-  });
-
+  const [tasks, setTasks] = useState([]);
   const [inputText, setInputText] = useState('');
   const [showInput, setShowInput] = useState(false);
-  
+
   useEffect(() => {
-    localStorage.setItem('mindwall_tasks', JSON.stringify(tasks));
-  }, [tasks]);
+    fetch('/api/tasks')
+      .then((res) => {
+        if (!res.ok) throw new Error('Failed to fetch tasks');
+        return res.json();
+      })
+      .then((data) => setTasks(data))
+      .catch((err) => {
+        console.error('Error fetching tasks:', err);
+        // Fallback default tasks if API fails
+        setTasks([
+          { id: 1, text: 'Finish CS260 assignment', completed: false },
+          { id: 2, text: 'Read a chapter of the textbook', completed: false },
+          { id: 3, text: 'Plan a project', completed: false },
+        ]);
+      });
+  }, []);
 
   function handleToggle(id) {
     setTasks(tasks.map(task =>
@@ -23,12 +29,30 @@ export function Tasks() {
     ));
   }
 
-  function handleAddTask(e) {
+  async function handleAddTask(e) {
     e.preventDefault();
-    if (!inputText.trim()) return;
-    setTasks([...tasks, { id: Date.now(), text: inputText.trim(), completed: false }]);
-    setInputText('');
-    setShowInput(false);
+    if (inputText.trim() === '') return;
+
+    try{
+      const response = await fetch('/api/task', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ text: inputText })
+      });
+
+      if (response.ok) {
+        // Handle successful task creation
+        const updatedTasks = await response.json();
+        setTasks(updatedTasks);
+        setInputText('');
+        setShowInput(false);
+      } else {
+        // Handle error response
+        alert('Failed to add task. Please try again.');
+      }
+    } catch (error) {
+      console.error('Error adding task:', error);
+    }
   }
 
   return (
@@ -37,7 +61,7 @@ export function Tasks() {
         <section>
           <h2>Your Tasks</h2>
           <ul style={{ paddingLeft: '0' }}>
-            {tasks.map(task => (
+            {Array.isArray(tasks) && tasks.map(task => (
               <li key={task.id} className="mb-2" style={{ listStyle: 'none' }}>
                 <input
                   type="checkbox"
@@ -53,7 +77,7 @@ export function Tasks() {
                     color: task.completed ? '#6c757d' : 'inherit'
                   }}
                 >
-                  {task.text}
+                  {task.text || task.name}
                 </label>
               </li>
             ))}
