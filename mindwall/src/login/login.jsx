@@ -1,19 +1,28 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-export function Login({ userName:  PropUserName, authState, onAuthChange }) {
+export function Login({ userName: PropUserName, authState, onAuthChange }) {
   const [userName, setUserName] = useState(PropUserName || '');
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
 
-  function handleLogin(e) {
+  async function handleLogin(e) {
     e.preventDefault();
     if (userName && password) {
-      localStorage.setItem('userName', userName);
-      localStorage.setItem('mindwall_mood', 'Not Set');
-      localStorage.setItem('mindwall_tasks', JSON.stringify([]));
-      onAuthChange(userName, 'authenticated');
-      navigate('/dashboard');
+      const response = await fetch('/api/auth/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: userName, password: password }),
+      });
+
+      if (response.ok) {
+        localStorage.setItem('userName', userName);
+        onAuthChange(userName, 'authenticated');
+        navigate('/dashboard');
+      } else {
+        const body = await response.json();
+        alert(`Login failed: ${body.msg}`);
+      }
     }
   }
 

@@ -73,7 +73,7 @@ const verifyAuth = async (req, res, next) => {
 };
 
 // MindWall Endpoints
-apiRouter.get('/tasks', verifyAuth, (_req, res) => {
+apiRouter.get('/tasks', (_req, res) => {
   res.send(tasks);
 });
 
