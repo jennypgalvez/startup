@@ -23,17 +23,37 @@ export function Tasks() {
       });
   }, []);
 
-  function handleToggle(id) {
+  async function handleToggle(id) {
+    const taskToToggle = tasks.find(task => task.id === id);
+    if (!taskToToggle) return;
+
+    const updatedCompleted = !taskToToggle.completed;
+    
     setTasks(tasks.map(task =>
-      task.id === id ? { ...task, completed: !task.completed } : task
+      task.id === id ? { ...task, completed: updatedCompleted } : task
     ));
+
+    try {
+      const response = await fetch(`/api/task/${id}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ ...taskToToggle, completed: updatedCompleted })
+      });
+
+      if (response.ok) {
+        const serverTasks = await response.json();
+        setTasks(serverTasks);
+      } 
+    } catch (error) {
+      console.error('Error updating task:', error);   
+    }
   }
 
   async function handleAddTask(e) {
     e.preventDefault();
     if (inputText.trim() === '') return;
 
-    try{
+    try {
       const response = await fetch('/api/task', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -41,13 +61,11 @@ export function Tasks() {
       });
 
       if (response.ok) {
-        // Handle successful task creation
         const updatedTasks = await response.json();
         setTasks(updatedTasks);
         setInputText('');
         setShowInput(false);
       } else {
-        // Handle error response
         alert('Failed to add task. Please try again.');
       }
     } catch (error) {

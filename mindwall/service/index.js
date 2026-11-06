@@ -84,6 +84,14 @@ apiRouter.post('/task', (req, res) => {
   res.send(tasks);
 });
 
+apiRouter.put('/task/:id', (req, res) => {
+  const taskId = Number(req.params.id);
+  tasks = tasks.map(task =>
+    task.id === taskId ? { ...task, completed: req.body.completed } : task
+  );
+  res.send(tasks);
+} );
+
 apiRouter.get('/activities', verifyAuth, (_req, res) => {
   res.send(activities);
 });
