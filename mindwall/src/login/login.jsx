@@ -8,7 +8,6 @@ export function Login({ userName: PropUserName, authState, onAuthChange }) {
 
   async function handleLogin(e) {
     e.preventDefault();
-    e.preventDefault();
     await submitAuth('/api/auth/login');
   }
 
@@ -41,7 +40,7 @@ export function Login({ userName: PropUserName, authState, onAuthChange }) {
       <section className="login-layout card bg-white p-4 mx-auto mt-5 shadow-sm" style={{ maxWidth: '400px' }}>
         <h2 className="text-center">Welcome to MindWall</h2>
         <p className="text-muted text-center">Match tasks to your energy and time.</p>
-        <form className="login-form">
+        <form onSubmit={handleLogin} className="login-form">
           <div className="mb-3">
             <label>Username</label>
             <input
