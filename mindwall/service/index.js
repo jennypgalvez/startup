@@ -12,6 +12,7 @@ let tasks = [
   { id: 1, text: 'Finish CS260 assignment', completed: false },
   { id: 2, text: 'Read a chapter of the textbook', completed: false }
 ];
+
 let activities = [
   { id: 1, name: 'Sarah', activity: 'Completed a math assignment', status: 'Online' },
   { id: 2, name: 'John', activity: 'Working on a history project', status: 'Studying' }
