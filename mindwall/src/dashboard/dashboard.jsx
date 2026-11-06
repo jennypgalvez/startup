@@ -35,11 +35,32 @@ export function Dashboard() {
       .catch((err) => console.error('Error fetching quote:', err));
   }, []);
 
-  function toggleTask(id) {
-    const updatedTasks = tasks.map(task =>
-      task.id === id ? { ...task, completed: !task.completed } : task
-    );
-    setTasks(updatedTasks);
+  async function toggleTask(id) {
+    const taskToToggle = tasks.find(task => task.id === id);
+    if (!taskToToggle) return;
+
+    const updatedCompleted = !taskToToggle.completed;
+    
+    // Update local state immediately for instant feedback
+    setTasks(tasks.map(task =>
+      task.id === id ? { ...task, completed: updatedCompleted } : task
+    ));
+
+    // Sync with the backend
+    try {
+      const response = await fetch(`/api/task/${id}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ ...taskToToggle, completed: updatedCompleted })
+      });
+
+      if (response.ok) {
+        const serverTasks = await response.json();
+        setTasks(serverTasks);
+      } 
+    } catch (error) {
+      console.error('Error updating task:', error);   
+    }
   }
 
   function handleMoodChange(selectedMood) {
