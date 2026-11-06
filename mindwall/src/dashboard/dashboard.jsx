@@ -1,15 +1,17 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 export function Dashboard() {
+  const navigate = useNavigate();
   const userName = localStorage.getItem('userName') || 'Jennifer';
-  
+
   // State for tasks and daily quotes from the backend
   const [tasks, setTasks] = useState([]);
   const [quote, setQuote] = useState({ quote: "Focus on being productive instead of busy.", author: "Tim Ferriss" });
-  
+
   // State for mood tracking
   const [mood, setMood] = useState(localStorage.getItem('mindwall_mood') || 'Not Set');
-  
+
   // Fetch tasks and quote from backend when the dashboard loads
   useEffect(() => {
     fetch('/api/tasks')
@@ -32,9 +34,9 @@ export function Dashboard() {
       .then((data) => setQuote(data))
       .catch((err) => console.error('Error fetching quote:', err));
   }, []);
-  
+
   function toggleTask(id) {
-    const updatedTasks = tasks.map(task => 
+    const updatedTasks = tasks.map(task =>
       task.id === id ? { ...task, completed: !task.completed } : task
     );
     setTasks(updatedTasks);
@@ -46,7 +48,7 @@ export function Dashboard() {
   }
 
   const completedCount = tasks.filter(task => task.completed).length;
-  
+
   return (
     <div style={{ display: 'flex', flex: 1, width: '100%' }}>
       <main style={{ flex: 2 }}>
@@ -66,7 +68,7 @@ export function Dashboard() {
         <section id="tasks" className="card p-3 mb-4 shadow-sm">
           <h2>Today's Tasks</h2>
           <ul className="list-unstyled mt-3">
-            {tasks.map(task => (
+            {Array.isArray(tasks) && tasks.map(task => (
               <li key={task.id} className="mb-2">
                 <input
                   type="checkbox"
@@ -81,9 +83,9 @@ export function Dashboard() {
               </li>
             ))}
           </ul>
-          <form action="/timer" className="mt-3">
-            <button className="btn btn-primary">Start Task -&gt;</button>
-          </form>
+          <div className="mt-3">
+            <button onClick={() => navigate('/timer')} className="btn btn-primary">Start Task -&gt;</button>
+          </div>
         </section>
 
         <footer>
@@ -94,7 +96,7 @@ export function Dashboard() {
       </main>
 
       {/* Right Sidebar */}
-      <aside style={{ flex: 1}} className="d-flex flex-column gap-3">
+      <aside style={{ flex: 1 }} className="d-flex flex-column gap-3">
         <section id="mood-tracker" className="card p-3 shadow-sm">
           <h3>How are you feeling today?</h3>
           <p className="text-muted">Current mood: <strong>{mood}</strong></p>
