@@ -36,14 +36,14 @@ export function Dashboard() {
   }, []);
 
   async function toggleTask(id) {
-    const taskToToggle = tasks.find(task => task.id === id);
+    const taskToToggle = tasks.find(task => (task.id || task._id) === id);
     if (!taskToToggle) return;
 
     const updatedCompleted = !taskToToggle.completed;
     
     // Update local state immediately for instant feedback
     setTasks(tasks.map(task =>
-      task.id === id ? { ...task, completed: updatedCompleted } : task
+      (task.id || task._id) === id ? { ...task, completed: updatedCompleted } : task
     ));
 
     // Sync with the backend
@@ -89,20 +89,23 @@ export function Dashboard() {
         <section id="tasks" className="card p-3 mb-4 shadow-sm">
           <h2>Today's Tasks</h2>
           <ul className="list-unstyled mt-3">
-            {Array.isArray(tasks) && tasks.map(task => (
-              <li key={task.id} className="mb-2">
-                <input
-                  type="checkbox"
-                  id={`task-${task.id}`}
-                  checked={task.completed}
-                  onChange={() => toggleTask(task.id)}
-                  className="me-2"
-                />
-                <label htmlFor={`task-${task.id}`} style={{ textDecoration: task.completed ? 'line-through' : 'none' }}>
-                  {task.name || task.text}
-                </label>
+            {Array.isArray(tasks) && tasks.map(task => {
+              const taskId = task.id || task._id; // Use _id if id is not available
+              return (
+                <li key={taskId} className="mb-2">
+                  <input
+                    type="checkbox"
+                    id={`task-${taskId}`}
+                    checked={task.completed}
+                    onChange={() => toggleTask(taskId)}
+                    className="me-2"
+                  />
+                  <label htmlFor={`task-${taskId}`} style={{ textDecoration: task.completed ? 'line-through' : 'none' }}>
+                    {task.name || task.text}
+                  </label>
               </li>
-            ))}
+              );
+            })}
           </ul>
           <div className="mt-3">
             <button onClick={() => navigate('/timer')} className="btn btn-primary">Start Task -&gt;</button>
