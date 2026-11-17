@@ -2,6 +2,7 @@ const cookieParser = require('cookie-parser');
 const bcrypt = require('bcryptjs');
 const express = require('express');
 const uuid = require('uuid');
+const DB = require('./database.js');
 const app = express();
 
 const authCookieName = 'token';
@@ -11,11 +12,6 @@ let users = [];
 let tasks = [
   { id: 1, text: 'Finish CS260 assignment', completed: false },
   { id: 2, text: 'Read a chapter of the textbook', completed: false }
-];
-
-let activities = [
-  { id: 1, name: 'Sarah', activity: 'Completed a math assignment', status: 'Online' },
-  { id: 2, name: 'John', activity: 'Working on a history project', status: 'Studying' }
 ];
 
 // Backend service must use port 4000
@@ -35,17 +31,18 @@ apiRouter.post('/auth/create', async (req, res) => {
   if (await findUser('email', req.body.email)) {
     res.status(409).send({ msg: 'Existing user' });
   } else {
-    const user = await createUser(req.body.email, req.body.password);
+    const user = await DB.createUser(req.body.email, req.body.password);
     setAuthCookie(res, user.token);
     res.send({ email: user.email });
   }
 });
 
 apiRouter.post('/auth/login', async (req, res) => {
-  const user = await findUser('email', req.body.email);
+  const user = await DB.getUser('email', req.body.email);
   if (user) {
     if (await bcrypt.compare(req.body.password, user.password)) {
       user.token = uuid.v4();
+      await DB.updateUserToken(user);
       setAuthCookie(res, user.token);
       res.send({ email: user.email });
       return;
@@ -55,9 +52,10 @@ apiRouter.post('/auth/login', async (req, res) => {
 });
 
 apiRouter.delete('/auth/logout', async (req, res) => {
-  const user = await findUser('token', req.cookies[authCookieName]);
+  const user = await DB.getUserByToken(req.cookies[authCookieName]);
   if (user) {
-    delete user.token;
+    user.token = null;
+    await DB.updateUserToken(user);
   }
   res.clearCookie(authCookieName);
   res.status(204).end();
@@ -65,7 +63,7 @@ apiRouter.delete('/auth/logout', async (req, res) => {
 
 // Middleware to verify authorization
 const verifyAuth = async (req, res, next) => {
-  const user = await findUser('token', req.cookies[authCookieName]);
+  const user = await DB.getUserByToken(req.cookies[authCookieName]);
   if (user) {
     next();
   } else {
@@ -74,24 +72,25 @@ const verifyAuth = async (req, res, next) => {
 };
 
 // MindWall Endpoints
-apiRouter.get('/tasks', (_req, res) => {
+apiRouter.get('/tasks', verifyAuth, async (req, res) => {
+  const tasks = await DB.getTasks();
   res.send(tasks);
 });
 
-apiRouter.post('/task', (req, res) => {
-  const newTask = { id: Date.now(), text: req.body.text, completed: false };
-  tasks.push(newTask);
+apiRouter.post('/task', verifyAuth, async (req, res) => {
+  const newTask = {text: req.body.text, completed: false };
+  await DB.addTask(newTask);
+  const tasks = await DB.getTasks();
   res.send(tasks);
 });
 
-apiRouter.put('/task/:id', (req, res) => {
+apiRouter.put('/task/:id', verifyAuth, async (req, res) => {
   const taskId = Number(req.params.id);
-  tasks = tasks.map(task =>
-    task.id === taskId ? { ...task, completed: req.body.completed } : task
-  );
+  await DB.updateTaskStatus(taskId, req.body.completed);
+  const tasks = await DB.getTasks();
   res.send(tasks);
 } );
-
+  
 apiRouter.get('/activities', verifyAuth, (_req, res) => {
   res.send(activities);
 });
@@ -115,23 +114,6 @@ app.use(function (err, req, res, next) {
 app.use((_req, res) => {
   res.sendFile('index.html', { root: 'public' });
 });
-
-// Helper Functions
-async function createUser(email, password) {
-  const passwordHash = await bcrypt.hash(password, 10);
-  const user = {
-    email: email,
-    password: passwordHash,
-    token: uuid.v4(),
-  };
-  users.push(user);
-  return user;
-}
-
-async function findUser(field, value) {
-  if (!value) return null;
-  return users.find((u) => u[field] === value);
-}
 
 function setAuthCookie(res, authToken) {
   res.cookie(authCookieName, authToken, {
