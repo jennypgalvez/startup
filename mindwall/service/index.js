@@ -7,13 +7,6 @@ const app = express();
 
 const authCookieName = 'token';
 
-// In-memory data stores for MindWall
-let users = [];
-let tasks = [
-  { id: 1, text: 'Finish CS260 assignment', completed: false },
-  { id: 2, text: 'Read a chapter of the textbook', completed: false }
-];
-
 // Backend service must use port 4000
 const port = process.argv.length > 2 ? process.argv[2] : 4000;
 
@@ -28,7 +21,7 @@ app.use(`/api`, apiRouter);
 
 // Authentication Endpoints (from Simon reference)
 apiRouter.post('/auth/create', async (req, res) => {
-  if (await findUser('email', req.body.email)) {
+  if (await DB.getUser(req.body.email)) {
     res.status(409).send({ msg: 'Existing user' });
   } else {
     const user = await DB.createUser(req.body.email, req.body.password);
