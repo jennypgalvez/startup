@@ -81,7 +81,7 @@ apiRouter.post('/task', verifyAuth, async (req, res) => {
 
 apiRouter.put('/task/:id', verifyAuth, async (req, res) => {
   const user = await DB.getUserByToken(req.cookies[authCookieName]);
-  const taskId = Number(req.params.id);
+  const taskId = req.params.id
   await DB.updateTaskStatus(taskId, req.body.completed);
   const tasks = await DB.getTasks(user.email);
   res.send(tasks);
@@ -95,8 +95,32 @@ apiRouter.delete('/task/:id', verifyAuth, async (req, res) => {
   res.send(tasks);
 });
   
-apiRouter.get('/activities', verifyAuth, (_req, res) => {
-  res.send([]);
+// MindWall Friends / Activities Endpoints
+apiRouter.get('/activities', verifyAuth, async (req, res) => {
+  const user = await DB.getUserByToken(req.cookies[authCookieName]);
+  const activities = await DB.getActivities ? await DB.getActivities(user.email) : [];
+  res.send(activities);
+});
+
+apiRouter.post('/activities', verifyAuth, async (req, res) => {
+  const user = await DB.getUserByToken(req.cookies[authCookieName]);
+  const newActivity = { 
+    email: user.email, 
+    name: req.body.name, 
+    activity: req.body.activity, 
+    status: req.body.status || 'Online' 
+  };
+  if (DB.addActivity) await DB.addActivity(newActivity);
+  const activities = DB.getActivities ? await DB.getActivities(user.email) : [];
+  res.send(activities);
+});
+
+apiRouter.delete('/activities/:id', verifyAuth, async (req, res) => {
+  const user = await DB.getUserByToken(req.cookies[authCookieName]);
+  const activityId = req.params.id;
+  if (DB.deleteActivity) await DB.deleteActivity(activityId);
+  const activities = DB.getActivities ? await DB.getActivities(user.email) : [];
+  res.send(activities);
 });
 
 apiRouter.get('/quote', async (_req, res) => {
