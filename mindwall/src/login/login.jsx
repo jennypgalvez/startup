@@ -42,15 +42,18 @@ export function Login({ userName: PropUserName, authState, onAuthChange }) {
         <p className="text-muted text-center">Match tasks to your energy and time.</p>
         <form onSubmit={handleLogin} className="login-form">
           <div className="mb-3">
-            <label>Username</label>
+            <label>Email</label>
             <input
-              type="text"
+              type="email"
               className="form-control"
-              placeholder="Enter your name"
+              placeholder="Enter your email"
               value={userName}
               onChange={(e) => setUserName(e.target.value)}
               required
             />
+            <div className="form-text text-muted" style={{ fontSize: '0.85rem' }}>
+              Please enter a valid email address.
+            </div>
           </div>
           <div className="mb-3">
             <label>Password</label>
