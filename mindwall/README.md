@@ -101,9 +101,9 @@ For this deliverable I did the following. I checked the box `[x]` and added a de
 
 ## 🚀 DB deliverable
 For this deliverable I did the following. I checked the box `[x]` and added a description for things I completed.
-- [ ] I completed the prerequisites for this deliverable (Simon deployed, GitHub link, Git commits)
-- [ ] **Stores data in MongoDB**: I did not complete this part of the deliverable.
-- [ ] **Stores credentials in MongoDB**: I did not complete this part of the deliverable.
+- [X] I completed the prerequisites for this deliverable (Simon deployed, GitHub link, Git commits)
+- [X] **Stores data in MongoDB**: Configured MongoDB Atlas with database.js to persist tasks and friend activities, ensuring full CRUD functionality and per-user data scoping for clean slates.
+- [X] **Stores credentials in MongoDB**: I Implemented secure user authentication in index.js and database.js using bcryptjs for password hashing, uuid for session tokens, and secure cookie storage.
 
 ## 🚀 WebSocket deliverable
 For this deliverable I did the following. I checked the box `[x]` and added a description for things I completed.

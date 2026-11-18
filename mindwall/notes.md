@@ -72,3 +72,9 @@ Building the React components and reactivity features for MindWall taught me how
 
 # Server
 Building this project taught me how to connect my React website to a backend server using Node.js and Express. I learned how to set up server routes to handle tasks and daily quotes, serve my website files, and protect user accounts securely using login cookies and password hashing.
+
+ **Full-Stack Integration & MongoDB**: Successfully connected my React frontend and Express backend to MongoDB Atlas, implementing full CRUD functionality, secure user authentication with password hashing, and per-user data scoping to ensure a clean slate for every new account.
+
+ RESTful API & Third-Party Integration: Implemented Express REST endpoints for dynamic data handling, integrated a third-party random quote service as an external microservice, and configured secure cookie-based authorization to protect backend routes.
+
+Production Deployment & Cloud Infrastructure: Deployed the full-stack startup application to an AWS EC2 instance using a custom automated deployment script, configured Route 53 DNS records for mindwall.click, and managed secure HTTPS traffic with Caddy and Let's Encrypt certificates
