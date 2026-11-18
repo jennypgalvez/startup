@@ -1,4 +1,4 @@
-const { MongoClient } = require('mongodb');
+const { MongoClient, ObjectId} = require('mongodb');
 const bcrypt = require('bcryptjs');
 const uuid = require('uuid');
 const config = require('./dbConfig.json');
@@ -8,6 +8,7 @@ const client = new MongoClient(url);
 const db = client.db('mindwall'); // Use your mindwall database name
 const userCollection = db.collection('user');
 const taskCollection = db.collection('task');
+const activityCollection = db.collection('activity');
 
 // Test connection on startup
 (async function testConnection() {
@@ -46,10 +47,9 @@ async function updateUserToken(user) {
   );
 }
 
-function getTasks() {
-  const query = {};
-  const options = { sort: { _id: -1 }, limit: 50 };
-  return taskCollection.find(query, options).toArray();
+// Scoped to user email for clean slate functionality
+function getTasks(email) {
+  return taskCollection.find({ email: email }).sort({ _id: -1 }).toArray();
 }
 
 async function addTask(task) {
@@ -58,10 +58,26 @@ async function addTask(task) {
 
 async function updateTaskStatus(taskId, completed) {
   // If using MongoDB ObjectId or numeric IDs, match appropriately:
-  return taskCollection.updateOne(
-    { id: taskId },
-    { $set: { completed: completed } }
-  );
+  const query = ObjectId.isValid(taskId) ? { _id: new ObjectId(taskId) } : { _id: taskId };
+  return taskCollection.updateOne(query, { $set: { completed: completed } });
+}
+
+function deleteTask(taskId) {
+  const query = ObjectId.isValid(taskId) ? { _id: new ObjectId(taskId) } : { _id: taskId };
+  return taskCollection.deleteOne(query);
+}
+
+async function getActivities(email) {
+  return activityCollection.find({ email: email }).toArray();
+}
+
+async function addActivity(activity) {
+  return activityCollection.insertOne(activity);
+}
+
+async function deleteActivity(id) {
+  const query = ObjectId.isValid(id) ? { _id: new ObjectId(id) } : { _id: id };
+  return activityCollection.deleteOne(query);
 }
 
 module.exports = {
@@ -72,4 +88,8 @@ module.exports = {
   getTasks,
   addTask,
   updateTaskStatus,
+  deleteTask,
+  getActivities,
+  addActivity,
+  deleteActivity,
 };
