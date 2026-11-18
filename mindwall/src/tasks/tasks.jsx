@@ -24,13 +24,13 @@ export function Tasks() {
   }, []);
 
   async function handleToggle(id) {
-    const taskToToggle = tasks.find(task => task.id === id);
+    const taskToToggle = tasks.find(task => (task._id || task.id) === id);
     if (!taskToToggle) return;
 
     const updatedCompleted = !taskToToggle.completed;
     
     setTasks(tasks.map(task =>
-      task.id === id ? { ...task, completed: updatedCompleted } : task
+      (task._id || task.id) === id ? { ...task, completed: updatedCompleted } : task
     ));
 
     try {
@@ -73,22 +73,40 @@ export function Tasks() {
     }
   }
 
+  async function deleteTask(id) {
+    try {
+      const response = await fetch(`/api/task/${id}`, {
+        method: 'DELETE',
+      });
+
+      if (response.ok) {
+        const serverTasks = await response.json();
+        setTasks(serverTasks);
+      }
+    } catch (error) {
+      console.error('Error deleting task:', error);
+    }
+  }
+
   return (
     <>
       <main className="p-4">
         <section>
           <h2>Your Tasks</h2>
           <ul style={{ paddingLeft: '0' }}>
-            {Array.isArray(tasks) && tasks.map(task => (
-              <li key={task.id} className="mb-2" style={{ listStyle: 'none' }}>
-                <input
-                  type="checkbox"
-                  id={`task-${task.id}`}
+            {Array.isArray(tasks) && tasks.map(task => {
+              const taskId = task._id || task.id;
+              return (
+                <li key={taskId} className="mb-2" style={{ listStyle: 'none' }}>
+                  <div>
+                  <input
+                    type="checkbox"
+                    id={`task-${taskId}`}
                   checked={task.completed}
-                  onChange={() => handleToggle(task.id)}
+                  onChange={() => handleToggle(taskId)}
                 />
                 <label
-                  htmlFor={`task-${task.id}`}
+                  htmlFor={`task-${taskId}`}
                   style={{
                     marginLeft: '8px',
                     textDecoration: task.completed ? 'line-through' : 'none',
@@ -97,8 +115,17 @@ export function Tasks() {
                 >
                   {task.text || task.name}
                 </label>
+                </div>
+                <button
+                  onClick={() => deleteTask(taskId)}
+                  className="btn btn-danger btn-sm"
+                  style={{ marginLeft: '8px' }}
+                >
+                  Delete
+                </button>
               </li>
-            ))}
+              );
+            })}
           </ul>
 
           {showInput ? (
