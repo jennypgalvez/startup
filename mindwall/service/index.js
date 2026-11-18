@@ -66,26 +66,37 @@ const verifyAuth = async (req, res, next) => {
 
 // MindWall Endpoints
 apiRouter.get('/tasks', verifyAuth, async (req, res) => {
-  const tasks = await DB.getTasks();
+  const user = await DB.getUserByToken(req.cookies[authCookieName]);
+  const tasks = await DB.getTasks(user.email);
   res.send(tasks);
 });
 
 apiRouter.post('/task', verifyAuth, async (req, res) => {
-  const newTask = {text: req.body.text, completed: false };
+  const user = await DB.getUserByToken(req.cookies[authCookieName]);
+  const newTask = {email: user.email, text: req.body.text, completed: false };
   await DB.addTask(newTask);
-  const tasks = await DB.getTasks();
+  const tasks = await DB.getTasks(user.email);
   res.send(tasks);
 });
 
 apiRouter.put('/task/:id', verifyAuth, async (req, res) => {
+  const user = await DB.getUserByToken(req.cookies[authCookieName]);
   const taskId = Number(req.params.id);
   await DB.updateTaskStatus(taskId, req.body.completed);
-  const tasks = await DB.getTasks();
+  const tasks = await DB.getTasks(user.email);
   res.send(tasks);
 } );
+
+apiRouter.delete('/task/:id', verifyAuth, async (req, res) => {
+  const user = await DB.getUserByToken(req.cookies[authCookieName]);
+  const taskId = req.params.id;
+  await DB.deleteTask(taskId);
+  const tasks = await DB.getTasks(user.email);
+  res.send(tasks);
+});
   
 apiRouter.get('/activities', verifyAuth, (_req, res) => {
-  res.send(activities);
+  res.send([]);
 });
 
 apiRouter.get('/quote', async (_req, res) => {
