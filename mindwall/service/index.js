@@ -31,7 +31,7 @@ apiRouter.post('/auth/create', async (req, res) => {
 });
 
 apiRouter.post('/auth/login', async (req, res) => {
-  const user = await DB.getUser('email', req.body.email);
+  const user = await DB.getUser(req.body.email);
   if (user) {
     if (await bcrypt.compare(req.body.password, user.password)) {
       user.token = uuid.v4();
@@ -98,28 +98,38 @@ apiRouter.delete('/task/:id', verifyAuth, async (req, res) => {
 // MindWall Friends / Activities Endpoints
 apiRouter.get('/activities', verifyAuth, async (req, res) => {
   const user = await DB.getUserByToken(req.cookies[authCookieName]);
-  const activities = await DB.getActivities ? await DB.getActivities(user.email) : [];
+  const activities = await DB.getActivities(user.email);
   res.send(activities);
 });
 
 apiRouter.post('/activities', verifyAuth, async (req, res) => {
+ const friendName = (req.body.name || '').trim();
+ const friendUser = await DB.getUser(friendName);
+
+ // Reject if not registered user
+ if (!friendUser) {
+    res.status(400).send({ msg: 'Friend not registered' });
+    return;
+  }
+
   const user = await DB.getUserByToken(req.cookies[authCookieName]);
   const newActivity = { 
     email: user.email, 
-    name: req.body.name, 
+    name: friendUser.email, 
     activity: req.body.activity, 
     status: req.body.status || 'Online' 
   };
-  if (DB.addActivity) await DB.addActivity(newActivity);
-  const activities = DB.getActivities ? await DB.getActivities(user.email) : [];
+
+  await DB.addActivity(newActivity);
+  const activities = await DB.getActivities(user.email);
   res.send(activities);
 });
 
 apiRouter.delete('/activities/:id', verifyAuth, async (req, res) => {
   const user = await DB.getUserByToken(req.cookies[authCookieName]);
   const activityId = req.params.id;
-  if (DB.deleteActivity) await DB.deleteActivity(activityId);
-  const activities = DB.getActivities ? await DB.getActivities(user.email) : [];
+  await DB.deleteActivity(activityId);
+  const activities = await DB.getActivities(user.email);
   res.send(activities);
 });
 
