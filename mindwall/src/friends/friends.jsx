@@ -1,39 +1,38 @@
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 
 export function Friends() {
   const [friends, setFriends] = useState([]);
   const [friendName, setFriendName] = useState('');
   const [friendActivity, setFriendActivity] = useState('');
   const [showInput, setShowInput] = useState(false);
+  const [errorMsg, setErrorMsg] = useState('');
 
+  // Load saved friends/activities from backend on mount
   useEffect(() => {
-    // Fetch friends data from the API
     fetch('/api/activities')
       .then((res) => {
-        if (!res.ok) throw new Error('Failed to fetch friends');
-        return res.json();  
+        if (res.ok) return res.json();
+        return [];
       })
       .then((data) => setFriends(data))
-      .catch((err) => {
-        console.error('Error fetching friends:', err);
-        // Fallback default friends if API fails
-        setFriends([
-          { id: 1, name: 'Sarah', status: 'Online', activity: 'Completed a math assignment' },
-          { id: 2, name: 'John', status: 'Studying', activity: 'Working on a history project' },
-          { id: 3, name: 'Emma', status: 'Offline', activity: 'Taking a break' },
-        ]);
-      });
+      .catch((err) => console.error('Error loading activities:', err));
   }, []);
 
+  // Add a friend after verifying they exist in the database
   async function handleAddFriend(e) {
     e.preventDefault();
+    setErrorMsg('');
     if (friendName.trim() === '') return;
 
-    try{
+    try {
       const response = await fetch('/api/activities', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name: friendName, activity: friendActivity, status: 'Online' })
+        body: JSON.stringify({
+          name: friendName.trim(),
+          activity: friendActivity.trim() || 'Focusing',
+          status: 'Online',
+        }),
       });
 
       if (response.ok) {
@@ -42,21 +41,25 @@ export function Friends() {
         setFriendName('');
         setFriendActivity('');
         setShowInput(false);
+      } else {
+        const body = await response.json();
+        setErrorMsg(body.msg || 'Friend not registered');
       }
     } catch (error) {
       console.error('Error adding friend:', error);
+      setErrorMsg('Something went wrong while adding your friend.');
     }
-  }  
+  }
 
-  async function deleteFriend(id) {
+  // Delete a friend activity entry
+  async function handleDeleteFriend(id) {
     try {
       const response = await fetch(`/api/activities/${id}`, {
         method: 'DELETE',
       });
-
       if (response.ok) {
-        const serverFriends = await response.json();
-        setFriends(serverFriends);
+        const updatedFriends = await response.json();
+        setFriends(updatedFriends);
       }
     } catch (error) {
       console.error('Error deleting friend:', error);
@@ -65,61 +68,89 @@ export function Friends() {
 
   return (
     <main className="p-4" style={{ flex: 1 }}>
-      <section className="card p-4 shadow-sm mb-4">
-        <h2>Your Friends</h2>
-        <p className="text-muted">See what your friends are up to and how they're doing.</p>
+      <section className="card p-4 shadow-sm" style={{ maxWidth: '600px', margin: '0 auto' }}>
+        <div className="d-flex justify-content-between align-items-center mb-3">
+          <div>
+            <h2>Friends Activity</h2>
+            <p className="text-muted mb-0">See what your study buddies are working on.</p>
+          </div>
+          <button
+            className="btn btn-primary"
+            onClick={() => {
+              setShowInput(!showInput);
+              setErrorMsg('');
+            }}
+          >
+            {showInput ? 'Cancel' : '+ Add Friend'}
+          </button>
+        </div>
 
-        <ul className="list-group list-group-flush mt-3">
-          {Array.isArray(friends) && friends.map(friend => {
-            const friendId = friend._id || friend.id;
-            return (
-              <li key={friendId} className="list-group-item d-flex justify-content-between align-items-center">
+        {showInput && (
+          <form onSubmit={handleAddFriend} className="mb-4 p-3 border rounded bg-light">
+            <div className="mb-2">
+              <label className="form-label">Friend&apos;s Registered Email</label>
+              <input
+                type="email"
+                className="form-control"
+                placeholder="Enter friend's email (e.g. friend@byu.edu)"
+                value={friendName}
+                onChange={(e) => setFriendName(e.target.value)}
+                required
+              />
+            </div>
+
+            <div className="mb-3">
+              <label className="form-label">Current Activity</label>
+              <input
+                type="text"
+                className="form-control"
+                placeholder="e.g., Studying CS 260"
+                value={friendActivity}
+                onChange={(e) => setFriendActivity(e.target.value)}
+              />
+            </div>
+
+            {errorMsg && (
+              <div className="alert alert-danger py-2" role="alert">
+                {errorMsg}
+              </div>
+            )}
+
+            <button type="submit" className="btn btn-success w-100">
+              Save Friend
+            </button>
+          </form>
+        )}
+
+        {friends.length === 0 ? (
+          <p className="text-muted text-center my-4">No friends added yet.</p>
+        ) : (
+          <ul className="list-group">
+            {friends.map((friend) => (
+              <li
+                key={friend._id}
+                className="list-group-item d-flex justify-content-between align-items-center"
+              >
                 <div>
                   <strong>{friend.name}</strong>
-                  <div className="text-muted">{friend.activity}</div>
+                  <div className="text-muted small">{friend.activity}</div>
                 </div>
-                <div className="d-flex align-items-center gap-3">
-                  <span className={`badge ${friend.status === 'Online' ? 'bg-success' : friend.status === 'Studying' ? 'bg-warning text-dark' : 'bg-secondary'}`}>
-                    {friend.status}
-                  </span>
+                <div className="d-flex align-items-center gap-2">
+                  <span className="badge bg-success">{friend.status}</span>
                   <button
-                    onClick={() => deleteFriend(friendId)}
                     className="btn btn-sm btn-outline-danger"
+                    onClick={() => handleDeleteFriend(friend._id)}
                   >
                     Remove
                   </button>
                 </div>
               </li>
-            );
-          })}
-        </ul>
-
-        {showInput ? (
-          <form onSubmit={handleAddFriend} className="mt-3">
-            <input
-              type="text"
-              value={friendName}
-              onChange={(e) => setFriendName(e.target.value)}
-              placeholder="Friend's Name"
-              className="form-control mb-2"
-              required
-            />
-            <input
-              type="text"
-              value={friendActivity}
-              onChange={(e) => setFriendActivity(e.target.value)}
-              placeholder="What are they working on?"
-              className="form-control mb-2"
-              />
-              <button type="submit" className="btn btn-success btn-sm me-2">Save Friend</button>
-              <button type="button" onClick={() => setShowInput(false)} className="btn btn-secondary btn-sm">Cancel</button>
-          </form>
-        ) : (   
-        <button onClick={() => setShowInput(true)} className="btn btn-primary btn-sm mt-3">Add Friend</button>
+            ))}
+          </ul>
         )}
-        </section>
+      </section>
 
-      <footer>
+      <footer className="mt-4 text-center">
         <hr />
         <p>Created by: Jennifer Wall</p>
         <a href="https://github.com/jennypgalvez/startup">GitHub Repository</a>
